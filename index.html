@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design Journey</title>
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="stylesheet" href="./styles.css?v=journey-direct-story" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.165.0/build/three.module.js"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <main class="site-shell">
+      <section class="hero" aria-label="Interactive industrial design globe">
+        <div class="brand">
+          <div class="identity">
+            <span class="identity-name">Jingsong Qi</span>
+            <span class="identity-line">
+              <span class="identity-role">Industrial Designer</span>
+              <span class="availability-status"><span aria-hidden="true"></span>Open to Work</span>
+            </span>
+          </div>
+          <h1>Design Journey</h1>
+          <p>Design drives the world.</p>
+        </div>
+
+        <button id="project-trigger" class="hud hud-left project-hud" type="button">
+          <strong>Projects</strong>
+        </button>
+
+        <button id="about-trigger" class="hud hud-right about-hud" type="button">
+          <strong>Resume</strong>
+        </button>
+
+        <button id="journey-trigger" class="hud hud-right journey-hud" type="button">
+          <strong>My Journey</strong>
+        </button>
+
+        <canvas id="globe" aria-label="Interactive rotating Earth"></canvas>
+
+        <div id="label-layer" class="label-layer" aria-live="polite"></div>
+
+        <nav class="place-strip contact-dock" aria-label="Contact and availability">
+          <div class="contact-strip" aria-label="Contact links">
+            <a href="mailto:kingsongqi627@gmail.com">Email</a>
+            <a href="https://www.linkedin.com/in/jingsongqi" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="https://www.instagram.com/" target="_blank" rel="noreferrer">Instagram</a>
+          </div>
+        </nav>
+      </section>
+
+      <section id="detail-view" class="detail-view" aria-hidden="true">
+        <button id="close-detail" class="icon-button detail-back" type="button" aria-label="Back">
+          <span aria-hidden="true">←</span>
+        </button>
+        <article class="case-page">
+          <header class="case-hero">
+            <div class="detail-media">
+              <div id="detail-image" class="detail-image"></div>
+            </div>
+            <div class="detail-copy">
+              <span id="detail-year" class="kicker"></span>
+              <h2 id="detail-title"></h2>
+              <p id="detail-description"></p>
+              <div id="detail-tags" class="tag-row"></div>
+              <div class="detail-grid">
+                <div>
+                  <span>Role</span>
+                  <strong id="detail-role"></strong>
+                </div>
+                <div>
+                  <span>Output</span>
+                  <strong id="detail-output"></strong>
+                </div>
+              </div>
+            </div>
+          </header>
+          <div id="case-gallery" class="case-gallery"></div>
+          <nav class="case-nav" aria-label="Project navigation">
+            <button id="prev-project" class="case-nav-button" type="button">
+              <span>Previous Project</span>
+              <strong id="prev-project-title"></strong>
+            </button>
+            <button id="next-project" class="case-nav-button" type="button">
+              <span>Next Project</span>
+              <strong id="next-project-title"></strong>
+            </button>
+          </nav>
+        </article>
+      </section>
+
+      <section id="project-view" class="project-view" aria-hidden="true">
+        <button id="close-project" class="icon-button" type="button" aria-label="Back to globe">
+          <span aria-hidden="true">←</span>
+        </button>
+        <article class="project-panel">
+          <div class="panel-heading">
+            <span class="kicker">Selected Work</span>
+            <h2>Projects</h2>
+          </div>
+          <div id="project-grid" class="project-grid"></div>
+        </article>
+      </section>
+
+      <section id="journey-view" class="journey-view" aria-hidden="true">
+        <button id="close-journey" class="icon-button" type="button" aria-label="Back to globe">
+          <span aria-hidden="true">←</span>
+        </button>
+        <article class="journey-panel">
+          <div id="journey-timeline" class="journey-timeline"></div>
+        </article>
+      </section>
+
+      <section id="about-view" class="about-view" aria-hidden="true">
+        <button id="close-about" class="icon-button" type="button" aria-label="Back to globe">
+          <span aria-hidden="true">←</span>
+        </button>
+        <article class="resume">
+          <header class="resume-hero">
+            <span class="kicker">About</span>
+            <h2>Jingsong Qi</h2>
+            <div class="resume-contact">
+              <span>kingsongqi627@gmail.com</span>
+            </div>
+            <p>
+              Innovative industrial designer passionate about solving problems creatively and driving
+              progress through design. Experienced in consumer electronics and home products,
+              integrating technology, market insights, and user needs to create impactful solutions.
+              Design drives progress. Design changes the world.
+            </p>
+          </header>
+
+          <div class="resume-layout">
+            <aside class="resume-sidebar">
+              <section>
+                <h3>Education</h3>
+                <div class="resume-item">
+                  <strong>Master of Industrial Design With Distinction</strong>
+                  <span>Pratt Institute · Brooklyn, NY</span>
+                  <span>Aug 2022 – May 2025 · GPA 3.85</span>
+                </div>
+                <div class="resume-item">
+                  <strong>Global Innovation Design</strong>
+                  <span>Imperial College &amp; RCA · London, UK</span>
+                  <span>Sep 2023 – Dec 2023</span>
+                </div>
+                <div class="resume-item">
+                  <strong>B.S. Industrial Design</strong>
+                  <span>San Jose State University · San Jose, CA</span>
+                  <span>Aug 2017 – Dec 2021 · GPA 3.23</span>
+                </div>
+              </section>
+
+              <section>
+                <h3>Skills</h3>
+                <div class="skill-cloud">
+                  <span>SolidWorks</span>
+                  <span>Rhino</span>
+                  <span>Blender</span>
+                  <span>KeyShot</span>
+                  <span>Photoshop</span>
+                  <span>InDesign</span>
+                  <span>Illustrator</span>
+                  <span>Premiere Pro</span>
+                  <span>Figma</span>
+                  <span>Hand Sketching</span>
+                  <span>Prototyping</span>
+                  <span>3D Printing</span>
+                  <span>CNC &amp; Laser Cutting</span>
+                  <span>CMF Design</span>
+                  <span>Market Research</span>
+                  <span>UIUX Design</span>
+                </div>
+              </section>
+
+              <section>
+                <h3>Languages</h3>
+                <p>Chinese · English</p>
+              </section>
+            </aside>
+
+            <div class="resume-main">
+              <section>
+                <h3>Work Experience</h3>
+                <div class="timeline-item">
+                  <div>
+                    <strong>3D Printing Technician</strong>
+                    <span>Pratt Institute · Brooklyn, NY</span>
+                  </div>
+                  <time>Feb 2025 – May 2025</time>
+                  <p>Conducted 3D printing training sessions for 20+ students and developed 10+ functional test models as educational tools for the 3D Lab.</p>
+                </div>
+                <div class="timeline-item">
+                  <div>
+                    <strong>Teaching Assistant</strong>
+                    <span>Pratt Institute · Brooklyn, NY</span>
+                  </div>
+                  <time>Jan 2024 – May 2024</time>
+                  <p>Provided one-on-one feedback to 10+ students and helped refine student prototypes for manufacturability and functionality.</p>
+                </div>
+                <div class="timeline-item">
+                  <div>
+                    <strong>Product Designer / Project Manager</strong>
+                    <span>Morethanhugs · San Jose, CA</span>
+                  </div>
+                  <time>Feb 2022 – Aug 2023</time>
+                  <p>Established and managed the product department, contributing to a 200% increase in sales revenue, and designed the official company website.</p>
+                </div>
+                <div class="timeline-item">
+                  <div>
+                    <strong>Industrial Designer</strong>
+                    <span>ABCabinet · San Jose, CA</span>
+                  </div>
+                  <time>Aug 2021 – Jan 2022</time>
+                  <p>Secured partnerships through design presentations, conducted on-site measurements for 5+ clients, and developed smart furniture innovation for the R&amp;D department.</p>
+                </div>
+              </section>
+
+              <section>
+                <h3>Awards &amp; Projects</h3>
+                <div class="timeline-item compact">
+                  <div>
+                    <strong>IDEA Design Awards 2024 – Finalist</strong>
+                    <span>IDEA Gallery</span>
+                  </div>
+                  <time>Dec 2024</time>
+                  <p>Designed a sustainable product using recycled coffee grounds, selected as a finalist and showcased in the IDEA Gallery online.</p>
+                </div>
+                <div class="timeline-item compact">
+                  <div>
+                    <strong>Honda Design Workshop</strong>
+                    <span>New York, NY</span>
+                  </div>
+                  <time>May 2024</time>
+                  <p>Applied AI tools to streamline and innovate the industrial design process during an intensive industry workshop.</p>
+                </div>
+              </section>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script type="module" src="./src/main.js?v=journey-direct-story"></script>
+  </body>
+</html>
