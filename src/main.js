@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
 import { places } from "./content.js";
-import { openJourneyAt, isGlobeVisible } from "./portfolio.js?v=earth-texture-ready";
+import { openJourneyAt, isGlobeVisible } from "./portfolio.js?v=uniform-project-cards";
 
 const canvas = document.querySelector("#globe");
 const labelLayer = document.querySelector("#label-layer");

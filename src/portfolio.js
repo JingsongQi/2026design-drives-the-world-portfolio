@@ -40,7 +40,7 @@ function lockInput(duration) {
 
 function ensureGlobe() {
   if (!globeLoading) {
-    globeLoading = import("./main.js?v=earth-texture-ready").catch((error) => {
+    globeLoading = import("./main.js?v=uniform-project-cards").catch((error) => {
       hero.classList.add("globe-unavailable");
       document.body.classList.add("globe-fallback");
       console.warn("The globe could not start; portfolio navigation remains available.", error);
@@ -139,21 +139,31 @@ function renderProjects() {
   const grid = document.querySelector("#project-grid");
   projects.forEach((project, index) => {
     const card = document.createElement("a");
-    card.className = "project-tile";
+    card.className = "project-tile project-tile--template";
     card.href = `#project/${project.id}`;
     card.id = `project-${project.id}`;
-    if (project.cardTemplate === "hxx") {
-      card.classList.add("project-tile--template");
-      card.innerHTML = `
-        <div class="project-cover"><img src="${project.cover}" alt="${project.title}" loading="eager" decoding="async" /></div>
+    card.setAttribute("aria-label", project.title);
+    const image = `<img src="${project.cover}" alt="${project.title}" loading="${index < 2 ? "eager" : "lazy"}" decoding="async" />`;
+    const artwork = project.cardArtwork;
+    if (artwork?.indexColor) card.style.setProperty("--project-index-color", artwork.indexColor);
+    const cover = artwork ? `
+      <div class="project-cover project-cover--cropped" style="background:${artwork.background}">
+        <div class="project-artwork" style="--artwork-ratio:${artwork.width / artwork.height};--artwork-width:${artwork.sourceWidth / artwork.width * 100}%;--artwork-height:${artwork.sourceHeight / artwork.height * 100}%;--artwork-left:${-artwork.x / artwork.width * 100}%;--artwork-top:${-artwork.y / artwork.height * 100}%">${image}</div>
+      </div>` : `<div class="project-cover">${image}</div>`;
+    const context = project.client ? { label: "Design For", value: project.client } : project.cardContext;
+    const client = project.clientLogo
+      ? `<span class="project-client-logo"><img src="${project.clientLogo}" alt="${project.client}" /></span>`
+      : `<span>${context.value}</span>`;
+    card.innerHTML = `
+        ${cover}
         <div class="project-info">
-          <time class="project-template-date">${project.year}</time>
+          <time class="project-template-date">${project.cardDate || project.year}</time>
           <div class="project-model">
-            <h3>M01</h3>
-            <p>A versatile portable charger</p>
+            <h3>${project.cardTitle || project.title}</h3>
+            <p>${project.cardSubtitle || project.output}</p>
           </div>
           <div class="project-template-footer">
-            <p class="project-commission"><span>Design For</span><span class="project-client-logo"><img src="./assets/projects/hyx-logo.jpg" alt="HYX" /></span></p>
+            <p class="project-commission"><span>${context.label}</span>${client}</p>
             <div class="project-designers">
               <span class="project-designers-label">Designer :</span>
               <div class="project-designer-names">${project.designers.map((name) => `<span>${name}</span>`).join("")}</div>
@@ -161,22 +171,15 @@ function renderProjects() {
           </div>
         </div>
         <span class="project-template-index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>`;
-    } else {
-      card.innerHTML = `
-        <div class="project-cover"><img src="${project.cover}" alt="${project.title}" loading="lazy" decoding="async" /></div>
-        <div class="project-info">
-          <span class="project-number">C${String(index + 1).padStart(2, "0")}</span>
-          <div class="project-copy">
-            <span class="project-category">${project.tags.join(" / ")}</span>
-            <h3>${project.title}</h3>
-          </div>
-          <div class="project-footer">
-            <span class="project-output">${project.output}</span>
-            <span class="project-open" aria-hidden="true">&#8599;</span>
-          </div>
-        </div>`;
-    }
     grid.append(card);
+  });
+  document.fonts.ready.then(() => {
+    const context = document.createElement("canvas").getContext("2d");
+    context.font = `700 100px ${getComputedStyle(grid).getPropertyValue("--font-display")}`;
+    grid.querySelectorAll(".project-model h3").forEach((heading) => {
+      const size = Math.min(8.4, 2450 / context.measureText(heading.textContent).width);
+      heading.style.setProperty("--project-title-size", `${size}cqw`);
+    });
   });
 }
 

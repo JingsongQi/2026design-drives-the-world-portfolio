@@ -177,16 +177,48 @@ const hxxProject = {
   colors: ["rgba(32, 32, 32, 0.72)", "rgba(0, 47, 167, 0.5)"],
   cover: "./assets/projects/hxx-product.png",
   gallery: ["./assets/projects/hxx-product.png"],
-  cardTemplate: "hxx",
+  cardSubtitle: "A versatile portable charger",
+  client: "HYX",
+  clientLogo: "./assets/projects/hyx-logo.jpg",
   designers: ["Jingsong Qi", "Yunqi Wang", "Yuancong Jing"],
+};
+
+// Dates and artwork bounds come from the original portfolio cover sheets.
+const projectCards = {
+  "ic-ar-glasses-system": {
+    cardTitle: "IC",
+    cardDate: "09/2024\u201305/2025",
+    cardContext: { label: "Focus", value: "Wearables" },
+    cardArtwork: { x: 634, y: 221, width: 865, height: 458, sourceWidth: 1600, sourceHeight: 900, background: "#000", indexColor: "#fff" },
+  },
+  cartpal: {
+    cardDate: "01/2024\u201305/2024",
+    client: "Costco",
+    cardArtwork: { x: 865, y: 160, width: 1183, height: 905, sourceWidth: 2048, sourceHeight: 1152, background: "#eee" },
+  },
+  "project-y": {
+    cardDate: "01/2022\u201305/2022",
+    client: "Adidas",
+    cardArtwork: { x: 895, y: 0, width: 1153, height: 1152, sourceWidth: 2048, sourceHeight: 1152, background: "#eee" },
+  },
+  luminhub: {
+    cardDate: "01/2024\u201305/2024",
+    cardContext: { label: "Context", value: "New York" },
+    cardArtwork: { x: 1020, y: 120, width: 1028, height: 1032, sourceWidth: 2048, sourceHeight: 1152, background: "#eee" },
+  },
+  "shy-onion": {
+    cardDate: "01/2024\u201305/2024",
+    cardContext: { label: "Focus", value: "Interaction" },
+    cardArtwork: { x: 1030, y: 0, width: 1018, height: 1152, sourceWidth: 2048, sourceHeight: 1152, background: "#eee" },
+  },
 };
 
 // Project identity and routing are independent of the cities on the globe.
 export const projects = [
   hxxProject,
-  ...places.filter((place) => place.sourceUrl).map((place) => ({
-    ...place,
-    id: place.cover.split("/").pop().replace(".png", ""),
-  })),
+  ...places.filter((place) => place.sourceUrl).map((place) => {
+    const id = place.cover.split("/").pop().replace(".png", "");
+    return { ...place, id, ...projectCards[id], designers: ["Jingsong Qi"] };
+  }),
 ];
 
