@@ -1,4 +1,6 @@
-import { projects, places, journeyStops } from "./content.js";
+const contentUrl = new URL("./content.js", import.meta.url);
+contentUrl.search = new URL(import.meta.url).search;
+const { projects, places, journeyStops } = await import(contentUrl.href);
 
 const hero = document.querySelector(".hero");
 const projectTrigger = document.querySelector("#project-trigger");
@@ -40,7 +42,15 @@ function lockInput(duration) {
 
 function ensureGlobe() {
   if (!globeLoading) {
-    globeLoading = import("./main.js?v=uniform-project-cards").catch((error) => {
+    const globeUrl = new URL("./main.js", import.meta.url);
+    globeUrl.search = new URL(import.meta.url).search;
+    globeLoading = import(globeUrl.href).then(({ initGlobe }) =>
+      initGlobe({ places, openJourneyAt, isGlobeVisible }),
+    ).then(() => {
+      hero.classList.remove("globe-unavailable");
+      document.body.classList.remove("globe-fallback");
+    }).catch((error) => {
+      globeLoading = null;
       hero.classList.add("globe-unavailable");
       document.body.classList.add("globe-fallback");
       console.warn("The globe could not start; portfolio navigation remains available.", error);
@@ -137,7 +147,7 @@ function morphProjects(opening) {
 
 function renderProjects() {
   const grid = document.querySelector("#project-grid");
-  projects.forEach((project, index) => {
+  const cards = projects.map((project, index) => {
     const card = document.createElement("a");
     card.className = "project-tile project-tile--template";
     card.href = `#project/${project.id}`;
@@ -150,7 +160,9 @@ function renderProjects() {
       <div class="project-cover project-cover--cropped" style="background:${artwork.background}">
         <div class="project-artwork" style="--artwork-ratio:${artwork.width / artwork.height};--artwork-width:${artwork.sourceWidth / artwork.width * 100}%;--artwork-height:${artwork.sourceHeight / artwork.height * 100}%;--artwork-left:${-artwork.x / artwork.width * 100}%;--artwork-top:${-artwork.y / artwork.height * 100}%">${image}</div>
       </div>` : `<div class="project-cover">${image}</div>`;
-    const context = project.client ? { label: "Design For", value: project.client } : project.cardContext;
+    const context = project.client ? { label: "Design For", value: project.client } :
+      project.cardContext || { label: "Focus", value: project.tags?.[0] || project.output };
+    const designers = project.designers?.length ? project.designers : ["Jingsong Qi"];
     const client = project.clientLogo
       ? `<span class="project-client-logo"><img src="${project.clientLogo}" alt="${project.client}" /></span>`
       : `<span>${context.value}</span>`;
@@ -166,15 +178,17 @@ function renderProjects() {
             <p class="project-commission"><span>${context.label}</span>${client}</p>
             <div class="project-designers">
               <span class="project-designers-label">Designer :</span>
-              <div class="project-designer-names">${project.designers.map((name) => `<span>${name}</span>`).join("")}</div>
+              <div class="project-designer-names">${designers.map((name) => `<span>${name}</span>`).join("")}</div>
             </div>
           </div>
         </div>
         <span class="project-template-index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>`;
-    grid.append(card);
+    return card;
   });
+  grid.replaceChildren(...cards);
   document.fonts.ready.then(() => {
     const context = document.createElement("canvas").getContext("2d");
+    if (!context) return;
     context.font = `700 100px ${getComputedStyle(grid).getPropertyValue("--font-display")}`;
     grid.querySelectorAll(".project-model h3").forEach((heading) => {
       const size = Math.min(8.4, 2450 / context.measureText(heading.textContent).width);

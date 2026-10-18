@@ -346,7 +346,13 @@ body:not([data-view="home"]) .cursor-ship { display: none; }
 .timeline-item li::before, .timeline-item.compact p::before { position: absolute; left: 0; content: "\2022"; color: #002fa7; }
 .timeline-item.compact strong { font-size: 20px; }
 .timeline-item.compact p { margin-top: 15px; }
-.globe-unavailable { background: url("./assets/earth_atmos_2048.jpg") center / cover; }
+.globe-unavailable::after {
+  content: ""; position: absolute; top: 54%; left: 50%;
+  width: min(76vh, 76vw); aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 35% 30%, transparent 25%, rgba(0,0,0,.85)),
+    url("./assets/earth_atmos_2048.jpg") center / auto 100%;
+}
 .globe-fallback * { cursor: auto !important; }
 .globe-fallback .cursor-ship { display: none; }
 
